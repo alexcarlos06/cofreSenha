@@ -1,6 +1,7 @@
-import { useState } from "react";
-import { Text, Button, Box, Icon, HStack } from "native-base";
-import { MaterialIcons } from "@expo/vector-icons";
+import { useState } from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
+import { styles } from './styles';
 
 export function Cards(props) {
   const data = props.data;
@@ -11,50 +12,45 @@ export function Cards(props) {
     setpasswordIsVisible((prevState) => !prevState);
   }
   return (
-    <Box bg={"white"} padding={2} marginX={2}>
-      <HStack justifyContent={"space-between"}>
-        <Box flexDir={'row'}>
-        <Button
-          variant="unstyled"
-          startIcon={
-            <Icon
-              as={MaterialIcons}
-              name={passwordIsVisible ? "visibility" : "visibility-off"}
-              size={"xl"}
-              color={"primary.600"}
-              onPress={togglePasswordIsVisible}
-            />
-          }
-        />
+    <View style={styles.container}>
+    <TouchableOpacity onPress={togglePasswordIsVisible}>
+      <MaterialIcons
+        name={passwordIsVisible ? "visibility" : "visibility-off"}
+        size={22}
+        color="#888D97"
+      />
+    </TouchableOpacity>
 
-        <Box>
-          <Text fontWeight={"bold"}>{data.nome} </Text>
-          {passwordIsVisible ? (
-            <Text>{data.senha}</Text>
-          ) : (
-            <Text>{data.usuario}</Text>
-          )}
-        </Box>
-        </Box>
-        <Box>
-          <Button
-            variant="unstyled"
-            h={'100%'}
-            borderLeftWidth={1}
-            borderLeftRadius={0}
-            borderColor={'gray.200'}
-            onPress={onPress}
-            startIcon={
-              <Icon
-                as={MaterialIcons}
-                name="delete"
-                size={"md"}
-                color={"primary.600"}
-              />
-            }
-          />
-        </Box>
-      </HStack>
-    </Box>
+    <View style={styles.content}>
+      <View>
+        <Text style={styles.title}>
+          {data.nome}
+        </Text>
+
+        {
+          passwordIsVisible
+            ?
+            <Text style={styles.password}>
+              {data.senha}
+            </Text>
+            :
+            <Text style={styles.email}>
+              {data.usuario}
+            </Text>
+        }
+      </View>
+    </View>
+
+    <TouchableOpacity
+      style={styles.button}
+      onPress={onPress}
+    >
+      <MaterialIcons
+        name="delete"
+        size={22}
+        color="#888D97"
+      />
+    </TouchableOpacity>
+  </View>
   );
 }
