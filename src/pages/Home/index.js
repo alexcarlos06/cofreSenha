@@ -1,12 +1,14 @@
-import { useCallback, useState } from "react";
-import { FlatList, Text, Box, Button } from "native-base";
+import { useCallback, useEffect, useState } from "react";
+import { FlatList, Text, Box } from "native-base";
 import { useAsyncStorage } from "@react-native-async-storage/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import { useFocusEffect } from "@react-navigation/native";
 import { HeaderHome } from "../../components/HeaderHome";
 import { Cards } from "../../components/Cards";
 
 export function Home() {
   const [data, setData] = useState([]);
+
   const { getItem, setItem } = useAsyncStorage("@cofresenha:senhas");
 
   async function handleFechData() {
@@ -29,9 +31,11 @@ export function Home() {
       handleFechData();
     }, [])
   );
+
+
   return (
     <Box flex={1} backgroundColor={"#f2f3f5"}>
-      <HeaderHome />
+      <HeaderHome/>
       <Box
         flexDir={"row"}
         alignItems={"center"}
@@ -54,9 +58,6 @@ export function Home() {
           <Cards data={item} onPress={() => handleRemove(item.id)} />
         )}
       />
-      <Button variant={"subtle"} colorScheme="secondary">
-        Limpar
-      </Button>
     </Box>
   );
 }

@@ -3,7 +3,8 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Box, Text, Button, Icon } from "native-base";
 
-export function HeaderForm() {
+
+export function HeaderForm(props) {
   const navigation = useNavigation();
   return (
     <Box flexDir={"row"} height={100} width={"100%"} alignItems={"center"}>
@@ -28,7 +29,7 @@ export function HeaderForm() {
         color={"#3D434D"}
         marginRight={10}
       >
-        Cadastro
+        {props.titulo}
       </Text>
     </Box>
   );

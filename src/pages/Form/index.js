@@ -58,7 +58,7 @@ export function Form() {
       behavior={Platform.OS === "ios" ? "ppading" : "height"}
     >
       <Box padding={3}>
-        <HeaderForm />
+        <HeaderForm titulo={'Cadastro de Senhas'}/>
 
         <Controller
           control={control}

@@ -1,12 +1,41 @@
 import { Text, Box, Button, Avatar, HStack, VStack, Icon } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useState, useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export function HeaderHome() {
   const navigation = useNavigation();
 
+  async function obterDadosSalvos() {
+    try {
+      const dadosSalvos = await AsyncStorage.getItem(
+        "@cofresenha:configuracao"
+      );
+
+      if (dadosSalvos !== null) {
+        const parsedData = JSON.parse(dadosSalvos);
+        return parsedData;
+      }
+    } catch (error) {
+      console.error("Erro ao recuperar os dados do formulário:", error);
+    }
+  }
+
+  const [dadosConfiguracao, setDadosConfiguracao] = useState({});
+
+  // IIFE para executar a função assíncrona e atualizar o estado
+  useEffect(() => {
+    (async () => {
+      const dadosSalvos = await obterDadosSalvos();
+      setDadosConfiguracao(dadosSalvos || {});
+    })();
+  }, []); // O array vazio assegura que a função é executada apenas uma vez (equivalente ao componentDidMount)
+
+
+
   function handleAdd() {
-    navigation.navigate('Form');
+    navigation.navigate("Form");
   }
 
   return (
@@ -17,19 +46,19 @@ export function HeaderHome() {
       justifyContent={"center"}
     >
       <HStack
-        justifyItems={"space-between"}
+        justifyContent={"space-between"}
         space={25}
         padding={2}
         marginLeft={6}
       >
         <Avatar
           source={{
-            uri: "https://avatars.githubusercontent.com/u/64445525?v=4",
+            uri: dadosConfiguracao.urlFoto,
           }}
         />
         <VStack>
           <Text color={"#fff"} fontSize={"lg"}>
-            Olá, Alex ^^
+            {`Olá,  ${dadosConfiguracao.nome}^^`}
           </Text>
           <Text color={"#fff"} fontSize={"xs"}>
             Aqui você está seguro
