@@ -1,20 +1,21 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import Toast from "react-native-toast-message";
+import { NativeBaseProvider } from "native-base";
+import { StatusBar } from "react-native";
+import { Routes } from "./src/routes";
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NativeBaseProvider>
+      <StatusBar
+        barStyle="light-content"
+        hidden={false}
+        backgroundColor="#0e7490"
+        translucent={false}
+        networkActivityIndicatorVisible={true}
+      />
+      <Routes />
+      <Toast />
+    </NativeBaseProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
