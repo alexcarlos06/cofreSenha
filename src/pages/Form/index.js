@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import { Box, Button, Text, Icon } from "native-base";
 import { KeyboardAvoidingView, Platform } from "react-native";
 import Toast from "react-native-toast-message";
@@ -20,14 +21,16 @@ export function Form() {
     control,
     handleSubmit,
     formState: { errors },
-    resetField,
+    reset,
+    formState,
+    formState: { isSubmitSuccessful },
   } = useForm({ resolver: yupResolver(schema) });
-  const { getItem, setItem,  } = useAsyncStorage("@cofresenha:senhas");
+  const { getItem, setItem } = useAsyncStorage("@cofresenha:senhas");
 
   async function handleNew(data) {
     try {
       const id = uuid.v4();
-      data.id = id
+      data.id = id;
       const response = await getItem();
       const previusData = response ? JSON.parse(response) : [];
       const newData = [...previusData, data];
@@ -36,11 +39,10 @@ export function Form() {
 
       Toast.show({
         type: "success",
-        text1: "Cadastrado com sucesso!"
-      })
-      
-      console.log(newData);
-      
+        text1: "Cadastrado com sucesso!",
+      });
+
+      reset();
     } catch (error) {
       console.log(error);
       Toast.show({
@@ -50,6 +52,7 @@ export function Form() {
       });
     }
   }
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "ppading" : "height"}
@@ -65,6 +68,7 @@ export function Form() {
               title={"Nome do Serviço"}
               autoCapitalize="none"
               onChangeText={onChange}
+              defaultValue=""
             />
           )}
         />
@@ -85,6 +89,7 @@ export function Form() {
               title={"Identificação de acesso"}
               autoCapitalize="none"
               onChangeText={onChange}
+              defaultValue=""
             />
           )}
         />
