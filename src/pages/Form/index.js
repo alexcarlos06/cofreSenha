@@ -22,29 +22,25 @@ export function Form() {
     formState: { errors },
     resetField,
   } = useForm({ resolver: yupResolver(schema) });
-  const { getItem, setItem } = useAsyncStorage("@cofresenha:senhas");
+  const { getItem, setItem,  } = useAsyncStorage("@cofresenha:senhas");
 
-  async function handleNew() {
+  async function handleNew(data) {
     try {
-      console.log("estou na função");
       const id = uuid.v4();
-      const newData = {
-        id,
-        nome,
-        usuario,
-        senha,
-      };
-
+      data.id = id
       const response = await getItem();
       const previusData = response ? JSON.parse(response) : [];
-      const data = [...previusData, newData];
+      const newData = [...previusData, data];
 
-      await setItem(JSON.stringify(data));
+      await setItem(JSON.stringify(newData));
 
       Toast.show({
         type: "success",
-        text1: "Cadastrado com sucesso!",
-      });
+        text1: "Cadastrado com sucesso!"
+      })
+      
+      console.log(newData);
+      
     } catch (error) {
       console.log(error);
       Toast.show({
